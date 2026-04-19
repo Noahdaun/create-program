@@ -5,26 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Speaking Gym — 편집 프로그램</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #0e0e18;
-  --bg2: #13131f;
-  --bg3: #1a1a2e;
-  --bg4: #1e1e36;
-  --border: #252540;
-  --border2: #2e2e50;
-  --text: #e2e2f0;
-  --text2: #8888aa;
-  --text3: #555570;
+  --bg: #f4f1eb;
+  --bg2: #faf8f4;
+  --white: #ffffff;
+  --border: #e8e3d8;
+  --border2: #d8d3c8;
+  --text: #1a1a2e;
+  --text2: #666666;
+  --text3: #aaaaaa;
+  --navy: #1a2744;
   --orange: #e85d26;
-  --orange-dim: #6a2910;
-  --green: #2dd4a0;
-  --green-dim: #0a3028;
-  --blue: #378add;
-  --blue-dim: #0a1e40;
+  --orange-bg: #fff5f0;
+  --orange-border: #f4c0a0;
+  --green: #0f9e70;
+  --green-bg: #edfaf5;
+  --green-border: #b0e8d0;
+  --blue: #1a6ab5;
+  --blue-bg: #e8f4ff;
+  --blue-border: #b5d4f4;
+  --red-bg: #fff0f0;
+  --red-border: #f4c0c0;
+  --red: #c03030;
+  --playing-bg: #fff8e0;
+  --playing: #d4920a;
   --mono: 'JetBrains Mono', monospace;
-  --sans: 'Pretendard', 'Noto Sans KR', sans-serif;
+  --sans: 'Noto Sans KR', sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,194 +41,266 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
 
 /* ── NAV ── */
 .nav {
-  height: 42px; background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 14px; gap: 10px; flex-shrink: 0;
+  height: 44px; background: var(--navy); display: flex; align-items: center;
+  padding: 0 14px; gap: 8px; flex-shrink: 0;
 }
-.logo { width: 26px; height: 26px; background: var(--orange); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.logo svg { width: 14px; height: 14px; fill: #fff; }
-.nav-title { font-size: 13px; font-weight: 700; color: var(--text); }
-.nav-badge { font-size: 9px; padding: 2px 7px; border-radius: 8px; background: var(--orange); color: #fff; font-weight: 700; letter-spacing: 0.5px; }
-.nav-url { font-family: var(--mono); font-size: 10px; color: var(--green); background: var(--green-dim); border: 1px solid #1a4a38; border-radius: 4px; padding: 3px 10px; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
-.nav-url:hover { opacity: 0.8; }
-.nav-spacer { flex: 1; }
+.logo { width: 28px; height: 28px; background: var(--orange); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo svg { width: 15px; height: 15px; fill: #fff; }
+.nav-title { font-size: 13px; font-weight: 700; color: #fff; }
+.nav-badge { font-size: 9px; padding: 2px 7px; border-radius: 8px; background: rgba(255,255,255,0.15); color: #fff; font-weight: 700; letter-spacing: 0.5px; }
+.nav-url {
+  font-size: 10px; color: #7ec8a0; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 4px;
+  padding: 3px 10px; cursor: pointer; font-family: var(--mono);
+  max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nav-url:hover { background: rgba(255,255,255,0.14); }
+.nav-sp { flex: 1; }
 .btn { padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; font-family: var(--sans); transition: opacity .15s, transform .1s; white-space: nowrap; }
 .btn:active { transform: scale(.97); }
-.btn-ghost { background: rgba(255,255,255,.07); color: var(--text2); border: 1px solid var(--border2); }
-.btn-ghost:hover { background: rgba(255,255,255,.12); color: var(--text); }
+.btn-ghost { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.75); }
+.btn-ghost:hover { background: rgba(255,255,255,0.18); }
 .btn-ghost:disabled { opacity: .35; cursor: not-allowed; }
-.btn-green { background: var(--green-dim); color: var(--green); border: 1px solid #1a4a38; }
-.btn-green:hover { opacity: .8; }
+.btn-green { background: #2dd4a0; color: #06402e; font-weight: 700; }
+.btn-green:hover { opacity: .88; }
 .btn-orange { background: var(--orange); color: #fff; }
-.btn-orange:hover { opacity: .85; }
+.btn-orange:hover { opacity: .88; }
 
 /* ── TOOLBAR ── */
 .toolbar {
-  height: 38px; background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 14px; gap: 6px; flex-shrink: 0; overflow-x: auto;
+  height: 40px; background: var(--white); border-bottom: 1.5px solid var(--border);
+  display: flex; align-items: center; padding: 0 14px; gap: 5px; flex-shrink: 0; overflow-x: auto;
 }
 .toolbar::-webkit-scrollbar { display: none; }
+.tb-btn {
+  padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text2); white-space: nowrap; transition: all .12s; font-family: var(--sans);
+}
+.tb-btn:hover { background: var(--bg); color: var(--text); border-color: var(--border2); }
+.tb-btn-blue { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-border); }
+.tb-btn-blue:hover { opacity: .85; }
+.tb-btn-red { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+.tb-btn-red:hover { opacity: .85; }
 .tb-sep { width: 1px; height: 18px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
-.tb-btn { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text2); white-space: nowrap; transition: all .15s; flex-shrink: 0; font-family: var(--sans); }
-.tb-btn:hover { background: var(--bg4); color: var(--text); }
-.tb-btn-blue { background: var(--blue-dim); color: var(--blue); border-color: #1a3a6a; }
-.tb-btn-blue:hover { opacity: .8; }
-.tb-btn-red { background: #2a0a0a; color: #cc5555; border-color: #4a1a1a; }
-.tb-btn-red:hover { opacity: .8; }
 .tb-label { font-size: 10px; color: var(--text3); flex-shrink: 0; }
 
-/* ── MAIN LAYOUT ── */
-.main { display: flex; height: calc(100vh - 80px); }
+/* ── MAIN ── */
+.main { display: flex; height: calc(100vh - 84px); }
 
-/* ── LEFT PANEL ── */
-.left { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg2); }
-
-.video-wrap { padding: 8px; flex-shrink: 0; }
-.video-box {
-  background: #000; border-radius: 8px; aspect-ratio: 16/9;
+/* ── DIVIDER ── */
+.divider {
+  width: 6px; background: var(--border); cursor: col-resize;
   display: flex; align-items: center; justify-content: center;
-  position: relative; border: 1px solid var(--border); overflow: hidden;
+  flex-shrink: 0; transition: background .15s; position: relative;
+}
+.divider:hover, .divider.dragging { background: var(--orange); }
+.divider-handle { width: 2px; height: 36px; background: var(--border2); border-radius: 2px; pointer-events: none; }
+.divider:hover .divider-handle, .divider.dragging .divider-handle { background: #fff; }
+
+/* ── LEFT ── */
+.left { width: 260px; min-width: 180px; max-width: 420px; flex-shrink: 0; display: flex; flex-direction: column; background: var(--white); border-right: 1.5px solid var(--border); }
+
+.video-wrap { padding: 10px 10px 6px; }
+.video-box {
+  background: #111; border-radius: 10px; aspect-ratio: 16/9;
+  overflow: hidden; border: 1.5px solid var(--border); position: relative;
 }
 .video-box iframe { width: 100%; height: 100%; border: none; }
-.video-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.video-placeholder svg { width: 28px; height: 28px; fill: var(--text3); }
-.video-placeholder span { font-size: 10px; color: var(--text3); }
+.video-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+.video-placeholder svg { width: 26px; height: 26px; fill: #555; }
+.video-placeholder span { font-size: 10px; color: #666; }
 
-.tl-wrap { padding: 0 8px 6px; flex-shrink: 0; }
-.tl-track { height: 4px; background: var(--bg3); border-radius: 2px; position: relative; cursor: pointer; }
-.tl-fill { height: 100%; background: var(--orange); border-radius: 2px; width: 0%; transition: width .1s; }
+.tl-wrap { padding: 0 10px 8px; }
+.tl-track { height: 4px; background: var(--border); border-radius: 2px; position: relative; cursor: pointer; }
+.tl-fill { height: 100%; background: var(--orange); border-radius: 2px; width: 0%; }
 .tl-head { width: 10px; height: 10px; background: #fff; border-radius: 50%; position: absolute; top: -3px; left: 0%; border: 2px solid var(--orange); transform: translateX(-50%); }
 .tl-times { display: flex; justify-content: space-between; font-size: 9px; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
 
-.panel-section { margin: 0 8px 8px; background: var(--bg); border-radius: 7px; border: 1px solid var(--border); padding: 10px; flex-shrink: 0; }
-.ps-title { font-size: 9px; color: var(--text3); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+.panel { margin: 0 10px 8px; background: var(--bg2); border-radius: 8px; border: 1.5px solid var(--border); padding: 10px; flex-shrink: 0; }
+.panel-title { font-size: 9px; color: var(--text3); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-.sync-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-.sync-lbl { font-size: 11px; color: var(--text2); }
-.sync-ctrl { display: flex; align-items: center; gap: 4px; }
-.sc-btn { width: 22px; height: 22px; border-radius: 4px; background: var(--bg3); border: 1px solid var(--border2); color: var(--green); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: background .1s; }
-.sc-btn:hover { background: var(--bg4); }
-.sc-val { font-size: 12px; font-weight: 700; color: var(--green); font-family: var(--mono); min-width: 44px; text-align: center; }
+.sync-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.sync-lbl { font-size: 11px; color: var(--text2); font-weight: 500; }
+.sync-ctrl { display: flex; align-items: center; gap: 5px; }
+.sc-btn {
+  width: 26px; height: 26px; border-radius: 6px; background: var(--white);
+  border: 1.5px solid var(--border2); color: var(--navy); font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700;
+  transition: all .12s;
+}
+.sc-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.sc-val { font-size: 12px; font-weight: 700; color: var(--navy); font-family: var(--mono); min-width: 46px; text-align: center; }
 .unit-row { display: flex; gap: 3px; }
-.unit-btn { flex: 1; text-align: center; padding: 3px 0; border-radius: 3px; font-size: 10px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); font-family: var(--mono); }
-.unit-btn.active { background: var(--blue-dim); color: var(--blue); border-color: #1a3a6a; }
+.unit-btn {
+  flex: 1; text-align: center; padding: 4px 0; border-radius: 5px;
+  font-size: 10px; font-weight: 700; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--white); color: var(--text3);
+  font-family: var(--mono); transition: all .12s;
+}
+.unit-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.unit-btn:hover:not(.active) { border-color: var(--border2); color: var(--text); }
 
 .kbd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
 .ki { display: flex; align-items: center; gap: 5px; }
-.kk { background: var(--bg3); border: 1px solid var(--border2); border-radius: 3px; padding: 2px 6px; font-size: 10px; font-weight: 700; color: var(--text); font-family: var(--mono); min-width: 28px; text-align: center; }
-.kk-green { color: var(--green); border-color: #1a3a2e; background: var(--green-dim); }
-.kk-orange { color: var(--orange); border-color: var(--orange-dim); background: #1a0e05; }
-.kd { font-size: 10px; color: var(--text3); }
+.kk {
+  background: var(--white); border: 1.5px solid var(--border2);
+  border-radius: 4px; padding: 2px 6px; font-size: 10px; font-weight: 700;
+  color: var(--text); font-family: var(--mono); min-width: 30px; text-align: center;
+}
+.kk-navy { background: var(--navy); color: #fff; border-color: var(--navy); }
+.kk-orange { background: var(--orange); color: #fff; border-color: var(--orange); }
+.kd { font-size: 10px; color: var(--text2); }
 .kdiv { grid-column: 1/-1; height: 1px; background: var(--border); margin: 2px 0; }
-.knote { grid-column: 1/-1; font-size: 9px; color: var(--orange); line-height: 1.5; margin-top: 2px; }
 
-/* ── RIGHT PANEL ── */
-.right { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+/* ── RIGHT ── */
+.right { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--white); }
 
 .sub-header {
-  height: 36px; padding: 0 10px; border-bottom: 1px solid var(--border);
+  height: 38px; padding: 0 12px; border-bottom: 1.5px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
   background: var(--bg2); flex-shrink: 0;
 }
 .sh-info { font-size: 11px; color: var(--text2); }
 .sh-right { display: flex; gap: 6px; align-items: center; }
-.sel-badge { background: var(--blue-dim); border: 1px solid #1a3a6a; border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--blue); font-weight: 700; font-family: var(--mono); }
+.sel-badge {
+  background: var(--blue-bg); border: 1.5px solid var(--blue-border);
+  border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--blue); font-weight: 700;
+}
 
 .col-heads {
-  display: grid; grid-template-columns: 28px 96px 1fr 48px 28px;
-  padding: 5px 10px; background: var(--bg2); border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+  display: grid; grid-template-columns: 28px 96px 1fr 46px 28px;
+  padding: 5px 12px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0;
 }
 .ch { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
 
 .sub-list { flex: 1; overflow-y: auto; }
 .sub-list::-webkit-scrollbar { width: 4px; }
-.sub-list::-webkit-scrollbar-track { background: var(--bg); }
+.sub-list::-webkit-scrollbar-track { background: var(--bg2); }
 .sub-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
+/* ── SUBTITLE ROW ── */
 .sr {
-  display: grid; grid-template-columns: 28px 96px 1fr 48px 28px;
-  border-bottom: 1px solid var(--border); cursor: pointer;
-  transition: background .1s; min-height: 48px;
+  display: grid; grid-template-columns: 28px 96px 1fr 46px 28px;
+  border-bottom: 1px solid #f0ece4; cursor: pointer;
+  transition: background .1s; min-height: 50px;
+  border-left: 3px solid transparent;
 }
-.sr:hover { background: var(--bg3); }
-.sr.active { background: #0e1828; border-left: 2px solid var(--orange); }
-.sr.active .sn { color: var(--orange); }
+.sr:hover { background: var(--bg2); }
 
-.sn { font-size: 10px; color: var(--text3); display: flex; align-items: center; justify-content: center; font-family: var(--mono); padding: 4px 2px; }
+/* SELECTED (not playing) */
+.sr.active {
+  background: #fff8f2;
+  border-left: 3px solid var(--orange);
+}
 
-.st { padding: 6px 6px; display: flex; flex-direction: column; gap: 3px; }
+/* PLAYING — very obvious */
+.sr.playing {
+  background: #fff8e0;
+  border-left: 4px solid #d4920a;
+  outline: 2px solid #f0c040;
+  outline-offset: -2px;
+}
+.sr.playing .sn { color: #d4920a; font-weight: 700; }
+.sr.playing .sdur { color: #d4920a; font-weight: 700; }
+
+.sn { font-size: 10px; color: var(--text3); display: flex; align-items: center; justify-content: center; font-family: var(--mono); }
+.sr.active .sn { color: var(--orange); font-weight: 700; }
+
+.st { padding: 7px 6px; display: flex; flex-direction: column; gap: 4px; }
 .tf { display: flex; align-items: center; gap: 3px; }
 .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.dot-s { background: var(--green); }
-.dot-e { background: var(--orange); }
+.ds { background: var(--green); }
+.de { background: var(--orange); }
 .tv {
   font-family: var(--mono); font-size: 10px; width: 54px;
-  background: var(--green-dim); border: 1px solid #1a3a2a;
-  border-radius: 3px; padding: 1px 4px; text-align: center;
-  color: var(--green); cursor: pointer; transition: border-color .1s;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 3px; padding: 2px 4px; text-align: center; color: var(--text2);
+  cursor: pointer; transition: border-color .1s;
 }
-.tv:hover { border-color: var(--green); }
-.tv-e { background: #1a0e05; border-color: var(--orange-dim); color: var(--orange); }
-.tv-e:hover { border-color: var(--orange); }
-.tv.editing { border-color: var(--blue) !important; color: #fff !important; outline: none; }
-.sr.active .tv { border-color: var(--green) !important; }
-.sr.active .tv-e { border-color: var(--orange) !important; }
+.tv:hover { border-color: var(--border2); }
+.tv-s { background: var(--green-bg); border-color: var(--green-border); color: #0a6040; }
+.tv-e { background: var(--orange-bg); border-color: var(--orange-border); color: #a04010; }
+.sr.active .tv-s { border-color: var(--green); }
+.sr.active .tv-e { border-color: var(--orange); }
+.tv.tv-editing { border-color: var(--blue) !important; color: var(--text) !important; outline: none; background: #fff !important; }
 
-.stxt { padding: 5px 6px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stxt { padding: 6px 6px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .sub-en {
-  font-size: 11px; color: var(--text); line-height: 1.4;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: text;
+  font-size: 12px; color: var(--text); line-height: 1.4;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  cursor: text; padding: 3px 5px; border-radius: 4px; border: 1.5px solid transparent;
+  transition: background .1s, border-color .1s;
 }
-.sub-en:hover { color: #fff; }
-.sub-ko { font-size: 10px; color: #c8a060; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: text; }
-.sub-ko:hover { color: #e8c080; }
-.sub-input {
-  font-size: 11px; color: #fff; background: var(--blue-dim);
-  border: 1px solid var(--blue); border-radius: 3px;
-  padding: 1px 5px; outline: none; width: 100%; font-family: var(--sans);
-  line-height: 1.4;
+.sub-en:hover { background: var(--bg); }
+.sub-en[contenteditable="true"] {
+  background: #fff; border-color: var(--blue);
+  outline: none; white-space: normal; overflow: visible;
+  color: var(--text);
 }
-.sub-hint { font-size: 9px; color: var(--text3); margin-top: 1px; }
-.sub-hint.editing-hint { color: var(--blue); }
 
 .sdur { font-size: 10px; color: var(--text3); display: flex; align-items: center; justify-content: center; font-family: var(--mono); }
 .sdel { display: flex; align-items: center; justify-content: center; }
-.del-btn { width: 18px; height: 18px; border-radius: 3px; background: #1a0808; border: 1px solid #3a1a1a; color: #663333; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .1s; }
-.del-btn:hover { color: #e85d26; border-color: var(--orange); background: var(--orange-dim); }
+.del-btn {
+  width: 20px; height: 20px; border-radius: 4px;
+  background: var(--red-bg); border: 1.5px solid var(--red-border);
+  color: #e08080; font-size: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .12s;
+}
+.del-btn:hover { color: var(--orange); border-color: var(--orange); background: var(--orange-bg); }
 
 /* ── STATUS BAR ── */
 .statusbar {
-  height: 28px; background: var(--bg2); border-top: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 10px; gap: 16px; flex-shrink: 0;
+  height: 28px; background: var(--bg2); border-top: 1.5px solid var(--border);
+  display: flex; align-items: center; padding: 0 12px; gap: 16px; flex-shrink: 0;
 }
-.sv { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 4px; font-family: var(--mono); }
-.sv span { color: var(--green); font-weight: 700; }
-.sv-warn span { color: var(--orange); }
-.sv-blue span { color: var(--blue); }
-.sv-spacer { flex: 1; }
+.sv { font-size: 10px; color: var(--text3); font-family: var(--mono); display: flex; align-items: center; gap: 3px; }
+.sv span { color: var(--navy); font-weight: 700; }
+.sv-sp { flex: 1; }
+.play-indicator { font-size: 10px; color: var(--playing); font-weight: 700; display: flex; align-items: center; gap: 4px; }
+.play-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--playing); animation: blink .8s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.sv-unit span { color: var(--orange); font-weight: 700; }
 
-/* ── MODAL ── */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 100; }
+/* ── MODALS ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .modal-overlay.hidden { display: none; }
-.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 20px; width: 520px; max-width: 90vw; }
-.modal-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-.modal-sub { font-size: 11px; color: var(--text2); margin-bottom: 12px; line-height: 1.6; }
+.modal {
+  background: var(--white); border: 1.5px solid var(--border); border-radius: 14px;
+  padding: 22px; width: 520px; max-width: 90vw;
+}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.modal-sub { font-size: 12px; color: var(--text2); margin-bottom: 14px; line-height: 1.7; }
 .modal-textarea {
-  width: 100%; height: 180px; background: var(--bg); border: 1px solid var(--border2);
+  width: 100%; height: 200px; background: var(--bg); border: 1.5px solid var(--border);
   border-radius: 8px; padding: 10px; font-size: 11px; font-family: var(--mono);
-  color: var(--text); resize: vertical; outline: none; line-height: 1.6;
+  color: var(--text); resize: vertical; outline: none; line-height: 1.7;
 }
 .modal-textarea:focus { border-color: var(--blue); }
 .modal-input {
-  width: 100%; background: var(--bg); border: 1px solid var(--border2);
-  border-radius: 8px; padding: 8px 12px; font-size: 13px;
-  color: var(--text); outline: none; margin-bottom: 12px;
+  width: 100%; background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: var(--sans);
+  color: var(--text); outline: none; margin-bottom: 14px;
 }
 .modal-input:focus { border-color: var(--blue); }
-.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+.mb { padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; border: none; font-family: var(--sans); }
+.mb-ghost { background: var(--bg); color: var(--text2); border: 1.5px solid var(--border); }
+.mb-ghost:hover { border-color: var(--border2); }
+.mb-blue { background: var(--blue); color: #fff; }
+.mb-blue:hover { opacity: .88; }
+.mb-orange { background: var(--orange); color: #fff; }
+.mb-orange:hover { opacity: .88; }
+.mb-green { background: #2dd4a0; color: #06402e; }
+.mb-green:hover { opacity: .88; }
 
-/* ── COPY TOAST ── */
-.toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--green-dim); border: 1px solid var(--green); color: var(--green); font-size: 12px; font-weight: 700; padding: 8px 20px; border-radius: 8px; z-index: 200; opacity: 0; transition: opacity .3s; pointer-events: none; }
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: var(--navy); color: #fff; font-size: 12px; font-weight: 600;
+  padding: 9px 22px; border-radius: 10px; z-index: 200;
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
 .toast.show { opacity: 1; }
 </style>
 </head>
@@ -231,18 +311,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
   <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
   <span class="nav-title">Speaking Gym</span>
   <span class="nav-badge">EDITOR</span>
-  <div class="nav-url" id="navUrl" onclick="openUrlModal()" title="클릭해서 URL 변경">URL 입력 필요</div>
-  <div class="nav-spacer"></div>
+  <div class="nav-url" id="navUrl" onclick="openModal('urlModal')">클릭해서 URL 입력</div>
+  <div class="nav-sp"></div>
   <button class="btn btn-ghost" id="undoBtn" onclick="undo()" disabled>↩ 취소</button>
   <button class="btn btn-ghost" onclick="saveLesson()">저장</button>
   <button class="btn btn-green" onclick="openTranslateModal()">번역 요청 →</button>
-  <button class="btn btn-orange" onclick="openExportModal()">내보내기 →</button>
+  <button class="btn btn-orange" onclick="openModal('exportModal')">내보내기 →</button>
 </div>
 
 <!-- TOOLBAR -->
 <div class="toolbar">
-  <span class="tb-label">자막</span>
-  <button class="tb-btn tb-btn-blue" onclick="openSrtModal()">자막 불러오기</button>
+  <button class="tb-btn tb-btn-blue" onclick="openModal('srtModal')">자막 불러오기</button>
+  <div class="tb-sep"></div>
   <button class="tb-btn" onclick="addRow()">+ 줄 추가</button>
   <button class="tb-btn" onclick="mergeRows()">줄 합치기</button>
   <button class="tb-btn" onclick="splitRow()">줄 나누기</button>
@@ -259,87 +339,88 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
 <div class="main">
 
   <!-- LEFT -->
-  <div class="left">
+  <div class="left" id="leftPanel">
+
     <div class="video-wrap">
       <div class="video-box" id="videoBox">
-        <div class="video-placeholder" id="videoPlaceholder">
+        <div class="video-placeholder" onclick="openModal('urlModal')">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          <span>URL을 입력하세요</span>
+          <span>URL 입력해서 영상 불러오기</span>
         </div>
       </div>
     </div>
 
     <div class="tl-wrap">
-      <div class="tl-track" id="tlTrack" onclick="seekFromTimeline(event)">
+      <div class="tl-track" onclick="seekTimeline(event)">
         <div class="tl-fill" id="tlFill"></div>
         <div class="tl-head" id="tlHead"></div>
       </div>
-      <div class="tl-times">
-        <span>0:00</span>
-        <span id="tlCurrent">0:00</span>
-        <span id="tlTotal">0:00</span>
-      </div>
+      <div class="tl-times"><span>0:00</span><span id="tlCur">0:00</span><span id="tlTot">0:00</span></div>
     </div>
 
-    <div class="panel-section">
-      <div class="ps-title">줄별 싱크 조정 (선택된 줄)</div>
-      <div class="sync-row">
-        <span class="sync-lbl">조정 단위</span>
-        <div class="unit-row" style="flex:1;margin-left:8px;">
-          <div class="unit-btn" id="unit01" onclick="setUnit(0.1)">0.1s</div>
-          <div class="unit-btn active" id="unit05" onclick="setUnit(0.5)">0.5s</div>
-          <div class="unit-btn" id="unit10" onclick="setUnit(1.0)">1.0s</div>
-        </div>
-      </div>
+    <div class="panel">
+      <div class="panel-title">줄별 싱크 조정</div>
       <div class="sync-row">
         <span class="sync-lbl">시작</span>
         <div class="sync-ctrl">
-          <div class="sc-btn" onclick="adjustTime('start',-1)">−</div>
-          <div class="sc-val" id="selStart">—</div>
-          <div class="sc-btn" onclick="adjustTime('start',1)">+</div>
+          <div class="sc-btn" onclick="adj('start',-1)">−</div>
+          <div class="sc-val" id="syncStart">—</div>
+          <div class="sc-btn" onclick="adj('start',1)">+</div>
         </div>
       </div>
-      <div class="sync-row" style="margin-bottom:0">
+      <div class="sync-row" style="margin-bottom:10px;">
         <span class="sync-lbl">끝</span>
         <div class="sync-ctrl">
-          <div class="sc-btn" onclick="adjustTime('end',-1)">−</div>
-          <div class="sc-val" id="selEnd">—</div>
-          <div class="sc-btn" onclick="adjustTime('end',1)">+</div>
+          <div class="sc-btn" onclick="adj('end',-1)">−</div>
+          <div class="sc-val" id="syncEnd">—</div>
+          <div class="sc-btn" onclick="adj('end',1)">+</div>
+        </div>
+      </div>
+      <div class="sync-row" style="margin-bottom:0;">
+        <span class="sync-lbl">단위</span>
+        <div class="unit-row" style="flex:1;margin-left:10px;">
+          <div class="unit-btn active" id="u01" onclick="setUnit(0.1)">0.1s</div>
+          <div class="unit-btn" id="u05" onclick="setUnit(0.5)">0.5s</div>
+          <div class="unit-btn" id="u10" onclick="setUnit(1.0)">1.0s</div>
         </div>
       </div>
     </div>
 
-    <div class="panel-section" style="flex:1;overflow-y:auto;">
-      <div class="ps-title">키보드 단축키</div>
+    <div class="panel" style="flex:1;overflow-y:auto;">
+      <div class="panel-title">키보드 단축키</div>
       <div class="kbd-grid">
-        <div class="ki"><span class="kk kk-green">Q</span><span class="kd">시작 −</span></div>
-        <div class="ki"><span class="kk kk-green">W</span><span class="kd">시작 +</span></div>
-        <div class="ki"><span class="kk kk-green">E</span><span class="kd">끝 −</span></div>
-        <div class="ki"><span class="kk kk-green">R</span><span class="kd">끝 +</span></div>
+        <div class="ki"><span class="kk kk-navy">Q</span><span class="kd">시작 −</span></div>
+        <div class="ki"><span class="kk kk-navy">W</span><span class="kd">시작 +</span></div>
+        <div class="ki"><span class="kk kk-navy">E</span><span class="kd">끝 −</span></div>
+        <div class="ki"><span class="kk kk-navy">R</span><span class="kd">끝 +</span></div>
         <div class="kdiv"></div>
         <div class="ki"><span class="kk">↑↓</span><span class="kd">줄 이동</span></div>
         <div class="ki"><span class="kk kk-orange">Space</span><span class="kd">구간 재생</span></div>
         <div class="ki"><span class="kk">Del</span><span class="kd">줄 삭제</span></div>
         <div class="ki"><span class="kk">Ctrl+Z</span><span class="kd">실행취소</span></div>
-        <div class="kdiv"></div>
-        <div class="knote">텍스트 클릭 → 편집모드 (QWER 꺼짐)<br>다른 영역 클릭 → 싱크모드 (QWER 켜짐)</div>
       </div>
     </div>
+
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider" id="divider">
+    <div class="divider-handle"></div>
   </div>
 
   <!-- RIGHT -->
-  <div class="right">
+  <div class="right" id="rightPanel">
     <div class="sub-header">
-      <div class="sh-info" id="shInfo">자막 0줄 — 자막을 불러오세요</div>
+      <div class="sh-info" id="shInfo">자막 0줄</div>
       <div class="sh-right">
         <span class="sel-badge" id="selBadge">선택 없음</span>
-        <button class="tb-btn" onclick="addRow()">+ 줄 추가</button>
+        <button class="tb-btn" onclick="addRow()" style="font-size:10px;padding:4px 10px;">+ 줄 추가</button>
       </div>
     </div>
     <div class="col-heads">
       <div class="ch">#</div>
       <div class="ch">시작 / 끝</div>
-      <div class="ch">자막 텍스트</div>
+      <div class="ch">영어 자막</div>
       <div class="ch" style="text-align:center;">길이</div>
       <div class="ch"></div>
     </div>
@@ -349,14 +430,14 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
       <div class="sv">시작: <span id="stStart">—</span></div>
       <div class="sv">끝: <span id="stEnd">—</span></div>
       <div class="sv">길이: <span id="stDur">—</span></div>
-      <div class="sv-spacer"></div>
-      <div class="sv sv-blue">모드: <span id="stMode">싱크 편집</span></div>
-      <div class="sv sv-warn">QWER: <span id="stQwer">활성</span></div>
+      <div class="sv-sp"></div>
+      <div class="play-indicator hidden" id="playIndicator">
+        <div class="play-dot"></div>재생 중 — Space로 정지
+      </div>
+      <div class="sv sv-unit">단위: <span id="stUnit">0.1s</span></div>
     </div>
   </div>
 </div>
-
-<!-- MODALS -->
 
 <!-- URL Modal -->
 <div class="modal-overlay hidden" id="urlModal">
@@ -365,8 +446,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
     <div class="modal-sub">유튜브 영상 주소를 붙여넣으세요.</div>
     <input class="modal-input" id="urlInput" type="text" placeholder="https://www.youtube.com/watch?v=..." />
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('urlModal')">취소</button>
-      <button class="btn btn-orange" onclick="setUrl()">확인</button>
+      <button class="mb mb-ghost" onclick="closeModal('urlModal')">취소</button>
+      <button class="mb mb-orange" onclick="applyUrl()">확인</button>
     </div>
   </div>
 </div>
@@ -375,11 +456,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
 <div class="modal-overlay hidden" id="srtModal">
   <div class="modal">
     <div class="modal-title">자막 불러오기</div>
-    <div class="modal-sub">DownSub.com 등에서 받은 SRT 자막을 붙여넣으세요.<br>영어 자막만 있어도 됩니다. 번역은 나중에 추가할 수 있어요.</div>
-    <textarea class="modal-textarea" id="srtInput" placeholder="1&#10;00:00:00,240 --> 00:00:03,840&#10;So the first day was a bust,&#10;&#10;2&#10;00:00:04,080 --> 00:00:06,240&#10;even by our standards.&#10;..."></textarea>
+    <div class="modal-sub">DownSub.com 등에서 받은 SRT 자막을 붙여넣으세요.<br>영어 자막만 있어도 됩니다.</div>
+    <textarea class="modal-textarea" id="srtInput" placeholder="1&#10;00:00:00,240 --> 00:00:03,840&#10;So the first day was a bust,&#10;&#10;2&#10;00:00:04,080 --> 00:00:06,240&#10;even by our standards."></textarea>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('srtModal')">취소</button>
-      <button class="btn btn-orange" onclick="loadSrt()">불러오기</button>
+      <button class="mb mb-ghost" onclick="closeModal('srtModal')">취소</button>
+      <button class="mb mb-orange" onclick="loadSrt()">불러오기</button>
     </div>
   </div>
 </div>
@@ -388,11 +469,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
 <div class="modal-overlay hidden" id="translateModal">
   <div class="modal">
     <div class="modal-title">번역 요청</div>
-    <div class="modal-sub">아래 내용을 복사해서 Claude 채팅창에 붙여넣으세요.<br>번역 + 표현 설명이 완성되면 결과를 다시 여기에 붙여넣으세요.</div>
-    <textarea class="modal-textarea" id="translateContent" readonly style="font-size:10px;"></textarea>
+    <div class="modal-sub">아래 내용을 복사해서 Claude 채팅창에 붙여넣으세요.<br>번역 + 표현 설명이 완성되면 결과를 파이프 포맷으로 받아서 저장하면 돼요.</div>
+    <textarea class="modal-textarea" id="translateContent" readonly></textarea>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('translateModal')">닫기</button>
-      <button class="btn btn-green" onclick="copyTranslateContent()">클립보드 복사</button>
+      <button class="mb mb-ghost" onclick="closeModal('translateModal')">닫기</button>
+      <button class="mb mb-green" onclick="copyTranslate()">클립보드 복사</button>
     </div>
   </div>
 </div>
@@ -401,29 +482,57 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); font
 <div class="modal-overlay hidden" id="exportModal">
   <div class="modal">
     <div class="modal-title">내보내기</div>
-    <div class="modal-sub">레슨 제목을 입력하고 내보내기를 클릭하세요.<br>번역과 표현 설명이 포함된 학습용 파일이 생성됩니다.</div>
+    <div class="modal-sub">레슨 제목을 입력하고 학습용 파일을 생성하세요.</div>
     <input class="modal-input" id="exportTitle" type="text" placeholder="레슨 제목 (예: The Middle S05E24)" />
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('exportModal')">취소</button>
-      <button class="btn btn-orange" onclick="exportLesson()">학습 파일 생성</button>
+      <button class="mb mb-ghost" onclick="closeModal('exportModal')">취소</button>
+      <button class="mb mb-orange" onclick="exportLesson()">학습 파일 생성</button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ── STATE ─────────────────────────────────────────────────────────────
 let subs = [];
-let selectedIdx = -1;
-let isEditingText = false;
-let unit = 0.5;
-let ytPlayer = null;
-let ytReady = false;
+let selIdx = -1;
+let unit = 0.1;
+let isEditing = false;
+let isPlaying = false;
+let playTimer = null;
 let currentVid = '';
+let ytPlayer = null;
 let history = [];
-let historyIdx = -1;
+let histIdx = -1;
+
+// ── RESIZABLE DIVIDER ─────────────────────────────────────────────────
+(function() {
+  const divider = document.getElementById('divider');
+  const left = document.getElementById('leftPanel');
+  let dragging = false, startX = 0, startW = 0;
+
+  divider.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX; startW = left.offsetWidth;
+    divider.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const w = Math.max(180, Math.min(420, startW + e.clientX - startX));
+    left.style.width = w + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    divider.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
 
 // ── YOUTUBE ───────────────────────────────────────────────────────────
 function getVid(url) {
@@ -432,58 +541,55 @@ function getVid(url) {
 }
 
 window.onYouTubeIframeAPIReady = function() {
-  ytReady = true;
-  if (currentVid) createPlayer(currentVid);
+  if (currentVid) initPlayer(currentVid);
 };
 
 function loadYTApi() {
-  if (window.YT) return;
+  if (window.YT && window.YT.Player) return;
   const s = document.createElement('script');
   s.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(s);
 }
 
-function createPlayer(vid) {
+function initPlayer(vid) {
   const box = document.getElementById('videoBox');
-  box.innerHTML = '<div id="ytIframe"></div>';
-  ytPlayer = new YT.Player('ytIframe', {
+  box.innerHTML = '<div id="ytEl"></div>';
+  ytPlayer = new YT.Player('ytEl', {
     videoId: vid,
     width: '100%', height: '100%',
-    playerVars: { controls: 1, rel: 0 },
+    playerVars: { controls: 1, rel: 0, modestbranding: 1 },
     events: {
-      onReady: () => { updateTimeline(); setInterval(updateTimeline, 500); },
+      onReady: () => setInterval(tickTimeline, 500)
     }
   });
 }
 
-function updateTimeline() {
+function tickTimeline() {
   if (!ytPlayer || !ytPlayer.getDuration) return;
   try {
     const cur = ytPlayer.getCurrentTime() || 0;
     const dur = ytPlayer.getDuration() || 1;
-    const pct = (cur / dur * 100).toFixed(1);
-    document.getElementById('tlFill').style.width = pct + '%';
-    document.getElementById('tlHead').style.left = pct + '%';
-    document.getElementById('tlCurrent').textContent = fmtTime(cur);
-    document.getElementById('tlTotal').textContent = fmtTime(dur);
+    const p = (cur / dur * 100).toFixed(1);
+    document.getElementById('tlFill').style.width = p + '%';
+    document.getElementById('tlHead').style.left = p + '%';
+    document.getElementById('tlCur').textContent = fmt2(cur);
+    document.getElementById('tlTot').textContent = fmt2(dur);
   } catch(e) {}
 }
 
-function seekFromTimeline(e) {
+function seekTimeline(e) {
   if (!ytPlayer || !ytPlayer.getDuration) return;
   const rect = e.currentTarget.getBoundingClientRect();
-  const pct = (e.clientX - rect.left) / rect.width;
-  ytPlayer.seekTo(pct * ytPlayer.getDuration(), true);
+  ytPlayer.seekTo((e.clientX - rect.left) / rect.width * ytPlayer.getDuration(), true);
 }
 
-// ── URL MODAL ─────────────────────────────────────────────────────────
-function openUrlModal() {
-  document.getElementById('urlInput').value = currentVid ? `https://www.youtube.com/watch?v=${currentVid}` : '';
-  openModal('urlModal');
-  setTimeout(() => document.getElementById('urlInput').focus(), 100);
+function fmt2(s) {
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
 }
 
-function setUrl() {
+// ── URL ───────────────────────────────────────────────────────────────
+function applyUrl() {
   const url = document.getElementById('urlInput').value.trim();
   const vid = getVid(url);
   if (!vid) { alert('올바른 유튜브 URL을 입력해주세요.'); return; }
@@ -491,373 +597,346 @@ function setUrl() {
   document.getElementById('navUrl').textContent = `youtube.com/watch?v=${vid}`;
   closeModal('urlModal');
   loadYTApi();
-  if (window.YT && window.YT.Player) createPlayer(vid);
+  if (window.YT && window.YT.Player) initPlayer(vid);
+  else setTimeout(() => { if (window.YT && window.YT.Player) initPlayer(vid); }, 1500);
 }
 
-// ── SRT PARSER ────────────────────────────────────────────────────────
-function openSrtModal() { openModal('srtModal'); }
-
+// ── SRT ───────────────────────────────────────────────────────────────
 function loadSrt() {
   const raw = document.getElementById('srtInput').value.trim();
-  if (!raw) { alert('자막을 붙여넣어주세요.'); return; }
+  if (!raw) return;
   const parsed = parseSrt(raw);
-  if (!parsed.length) { alert('자막을 파싱할 수 없어요. SRT 형식인지 확인해주세요.'); return; }
-  saveHistory();
-  subs = parsed;
-  selectedIdx = subs.length > 0 ? 0 : -1;
-  renderTable();
+  if (!parsed.length) { alert('SRT 파싱 실패. 형식을 확인해주세요.'); return; }
+  pushHistory();
+  subs = parsed; selIdx = 0;
+  render();
   closeModal('srtModal');
   document.getElementById('srtInput').value = '';
-  showToast(`자막 ${subs.length}줄 불러오기 완료!`);
+  toast(`자막 ${subs.length}줄 불러오기 완료`);
 }
 
-function parseSrt(text) {
-  const result = [];
-  const blocks = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split(/\n\n+/);
-  for (const block of blocks) {
+function parseSrt(txt) {
+  const res = [];
+  for (const block of txt.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split(/\n\n+/)) {
     const lines = block.trim().split('\n');
-    if (lines.length < 2) continue;
-    const timeLine = lines.find(l => l.includes('-->'));
-    if (!timeLine) continue;
-    const m = timeLine.match(/(\d+):(\d+):(\d+)[,.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,.](\d+)/);
+    const tl = lines.find(l => l.includes('-->'));
+    if (!tl) continue;
+    const m = tl.match(/(\d+):(\d+):(\d+)[,.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,.](\d+)/);
     if (!m) continue;
-    const start = +m[1]*3600 + +m[2]*60 + +m[3] + +m[4]/1000;
-    const end   = +m[5]*3600 + +m[6]*60 + +m[7] + +m[8]/1000;
-    const textLines = lines.filter(l => l.trim() && !/^\d+$/.test(l.trim()) && !l.includes('-->'));
-    const en = textLines.join(' ').replace(/<[^>]*>/g,'').trim();
-    if (en) result.push({ start: +start.toFixed(2), end: +end.toFixed(2), en, ko: '', note: '' });
+    const s = +m[1]*3600 + +m[2]*60 + +m[3] + +m[4]/1000;
+    const e = +m[5]*3600 + +m[6]*60 + +m[7] + +m[8]/1000;
+    const en = lines.filter(l => l.trim() && !/^\d+$/.test(l.trim()) && !l.includes('-->')).join(' ').replace(/<[^>]*>/g,'').trim();
+    if (en) res.push({ start: +s.toFixed(2), end: +e.toFixed(2), en, ko: '', note: '' });
   }
-  return result;
+  return res;
 }
 
-// ── TABLE RENDER ──────────────────────────────────────────────────────
-function fmt(s) { return parseFloat(s).toFixed(2); }
-function fmtTime(s) {
-  const m = Math.floor(s/60), sec = Math.floor(s%60);
-  return `${m}:${sec.toString().padStart(2,'0')}`;
-}
+// ── RENDER ────────────────────────────────────────────────────────────
+function fmt(n) { return parseFloat(n).toFixed(2); }
 
-function renderTable() {
+function render() {
   const list = document.getElementById('subList');
   list.innerHTML = '';
+
   subs.forEach((s, i) => {
-    const row = document.createElement('div');
-    row.className = 'sr' + (i === selectedIdx ? ' active' : '');
-    row.dataset.idx = i;
-    row.innerHTML = `
+    const div = document.createElement('div');
+    div.className = 'sr' + (i === selIdx ? ' active' : '') + (i === selIdx && isPlaying ? ' playing' : '');
+    div.dataset.i = i;
+
+    div.innerHTML = `
       <div class="sn">${i+1}</div>
-      <div class="st" data-area="time">
-        <div class="tf"><div class="dot dot-s"></div>
-          <input class="tv" data-i="${i}" data-f="start" value="${fmt(s.start)}" readonly />
-        </div>
-        <div class="tf"><div class="dot dot-e"></div>
-          <input class="tv tv-e" data-i="${i}" data-f="end" value="${fmt(s.end)}" readonly />
-        </div>
+      <div class="st">
+        <div class="tf"><div class="dot ds"></div><input class="tv tv-s" data-i="${i}" data-f="start" value="${fmt(s.start)}" readonly></div>
+        <div class="tf"><div class="dot de"></div><input class="tv tv-e" data-i="${i}" data-f="end" value="${fmt(s.end)}" readonly></div>
       </div>
       <div class="stxt">
-        <div class="sub-en" data-i="${i}" data-f="en" contenteditable="false">${escHtml(s.en) || '<span style="color:var(--text3)">영어 자막 없음</span>'}</div>
-        <div class="sub-ko" data-i="${i}" data-f="ko" contenteditable="false">${escHtml(s.ko) || '<span style="color:var(--text3)">번역 없음</span>'}</div>
-        <div class="sub-hint ${i === selectedIdx && isEditingText ? 'editing-hint' : ''}" id="hint-${i}">
-          ${i === selectedIdx && isEditingText ? '편집 중 — QWER 비활성' : '텍스트 클릭→편집 / 나머지→선택'}
-        </div>
+        <div class="sub-en" data-i="${i}" contenteditable="false">${escH(s.en) || ''}</div>
       </div>
       <div class="sdur">${(s.end - s.start).toFixed(1)}s</div>
-      <div class="sdel"><div class="del-btn" onclick="deleteRow(${i},event)">✕</div></div>
+      <div class="sdel"><div class="del-btn" data-i="${i}">✕</div></div>
     `;
 
-    // Click on row (non-text area) → select
-    row.addEventListener('mousedown', (e) => {
-      const target = e.target;
-      const isText = target.classList.contains('sub-en') || target.classList.contains('sub-ko');
-      const isTimeInput = target.classList.contains('tv');
-      const isDel = target.classList.contains('del-btn');
-      if (isDel) return;
-      if (isText) {
-        // Text edit mode
-        selectRow(i, false);
-        startTextEdit(target, i, target.dataset.f);
+    // Row click → select (not on text or time inputs)
+    div.addEventListener('mousedown', e => {
+      const t = e.target;
+      if (t.classList.contains('del-btn')) return;
+      if (t.classList.contains('sub-en')) {
+        selectRow(i);
+        startEnEdit(t, i);
         e.stopPropagation();
         return;
       }
-      if (isTimeInput) {
-        selectRow(i, true);
-        startTimeEdit(target, i, target.dataset.f);
+      if (t.classList.contains('tv')) {
+        selectRow(i);
+        startTvEdit(t, i, t.dataset.f);
         e.stopPropagation();
         return;
       }
-      selectRow(i, true);
+      selectRow(i);
     });
 
-    list.appendChild(row);
+    // Delete button
+    div.querySelector('.del-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      delRow(parseInt(e.target.dataset.i));
+    });
+
+    list.appendChild(div);
   });
 
   updateStatus();
   updateSyncPanel();
   document.getElementById('shInfo').textContent = `자막 ${subs.length}줄`;
-  document.getElementById('undoBtn').disabled = historyIdx < 0;
+  document.getElementById('undoBtn').disabled = histIdx < 0;
+  document.getElementById('playIndicator').classList.toggle('hidden', !isPlaying);
 }
 
-function escHtml(s) {
+function escH(s) {
   if (!s) return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function selectRow(i, syncMode) {
-  if (isEditingText) stopAllEdits();
-  selectedIdx = i;
-  isEditingText = !syncMode;
-  renderTable();
-  // Scroll into view
+function selectRow(i) {
+  if (isEditing) stopEdit();
+  selIdx = i;
+  isPlaying = false;
+  clearTimeout(playTimer);
+  render();
   const rows = document.querySelectorAll('.sr');
-  if (rows[i]) rows[i].scrollIntoView({ block: 'nearest' });
-}
-
-function startTextEdit(el, i, field) {
-  isEditingText = true;
-  el.contentEditable = 'true';
-  el.focus();
-  // Select all
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-
-  el.addEventListener('blur', () => {
-    const newVal = el.innerText.replace(/<[^>]*>/g,'').trim();
-    saveHistory();
-    subs[i][field] = newVal;
-    isEditingText = false;
-    renderTable();
-  }, { once: true });
-
-  el.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { el.blur(); }
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
-  });
-
-  updateStatus();
-}
-
-function startTimeEdit(el, i, field) {
-  el.removeAttribute('readonly');
-  el.classList.add('editing');
-  el.focus();
-  el.select();
-  el.addEventListener('blur', () => {
-    const v = parseFloat(el.value);
-    if (!isNaN(v) && v >= 0) {
-      saveHistory();
-      subs[i][field] = +v.toFixed(2);
-    }
-    el.setAttribute('readonly', '');
-    el.classList.remove('editing');
-    renderTable();
-  }, { once: true });
-  el.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') el.blur();
-    if (e.key === 'Escape') { el.value = fmt(subs[i][field]); el.blur(); }
-  });
-}
-
-function stopAllEdits() {
-  document.querySelectorAll('[contenteditable="true"]').forEach(el => { el.blur(); el.contentEditable = 'false'; });
-  isEditingText = false;
+  rows[i]?.scrollIntoView({ block: 'nearest' });
 }
 
 function updateStatus() {
-  const s = selectedIdx >= 0 ? subs[selectedIdx] : null;
-  document.getElementById('stSel').textContent = s ? `${selectedIdx+1}번` : '—';
+  const s = selIdx >= 0 ? subs[selIdx] : null;
+  document.getElementById('stSel').textContent = s ? `${selIdx+1}번` : '—';
   document.getElementById('stStart').textContent = s ? fmt(s.start)+'s' : '—';
   document.getElementById('stEnd').textContent = s ? fmt(s.end)+'s' : '—';
   document.getElementById('stDur').textContent = s ? (s.end-s.start).toFixed(1)+'s' : '—';
-  document.getElementById('stMode').textContent = isEditingText ? '텍스트 편집' : '싱크 편집';
-  document.getElementById('stQwer').textContent = isEditingText ? '비활성' : '활성';
-  document.getElementById('selBadge').textContent = s ? `${selectedIdx+1}번 선택` : '선택 없음';
+  document.getElementById('selBadge').textContent = s ? `${selIdx+1}번 선택` : '선택 없음';
 }
 
 function updateSyncPanel() {
-  const s = selectedIdx >= 0 ? subs[selectedIdx] : null;
-  document.getElementById('selStart').textContent = s ? fmt(s.start)+'s' : '—';
-  document.getElementById('selEnd').textContent = s ? fmt(s.end)+'s' : '—';
+  const s = selIdx >= 0 ? subs[selIdx] : null;
+  document.getElementById('syncStart').textContent = s ? fmt(s.start)+'s' : '—';
+  document.getElementById('syncEnd').textContent = s ? fmt(s.end)+'s' : '—';
 }
 
-// ── SYNC ADJUST ───────────────────────────────────────────────────────
+// ── TEXT EDIT ─────────────────────────────────────────────────────────
+function startEnEdit(el, i) {
+  isEditing = true;
+  el.contentEditable = 'true';
+  el.focus();
+  const r = document.createRange();
+  r.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(r);
+
+  el.addEventListener('blur', () => {
+    pushHistory();
+    subs[i].en = el.innerText.replace(/<[^>]*>/g,'').trim();
+    isEditing = false;
+    render();
+  }, { once: true });
+
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Escape') el.blur();
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
+    e.stopPropagation(); // prevent QWER shortcuts while editing
+  });
+}
+
+function startTvEdit(el, i, field) {
+  el.removeAttribute('readonly');
+  el.classList.add('tv-editing');
+  el.focus(); el.select();
+  el.addEventListener('blur', () => {
+    const v = parseFloat(el.value);
+    if (!isNaN(v) && v >= 0) { pushHistory(); subs[i][field] = +v.toFixed(2); }
+    el.setAttribute('readonly','');
+    el.classList.remove('tv-editing');
+    render();
+  }, { once: true });
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter') el.blur();
+    if (e.key === 'Escape') { el.value = fmt(subs[i][field]); el.blur(); }
+    e.stopPropagation();
+  });
+}
+
+function stopEdit() {
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => el.blur());
+  isEditing = false;
+}
+
+// ── SYNC ──────────────────────────────────────────────────────────────
 function setUnit(u) {
   unit = u;
-  ['unit01','unit05','unit10'].forEach(id => document.getElementById(id).classList.remove('active'));
-  const map = { 0.1:'unit01', 0.5:'unit05', 1.0:'unit10' };
+  ['u01','u05','u10'].forEach(id => document.getElementById(id).classList.remove('active'));
+  const map = {0.1:'u01',0.5:'u05',1.0:'u10'};
   document.getElementById(map[u])?.classList.add('active');
+  document.getElementById('stUnit').textContent = u.toFixed(1)+'s';
 }
 
-function adjustTime(field, dir) {
-  if (selectedIdx < 0) return;
-  saveHistory();
-  subs[selectedIdx][field] = +(subs[selectedIdx][field] + dir * unit).toFixed(2);
-  if (subs[selectedIdx].start < 0) subs[selectedIdx].start = 0;
-  if (subs[selectedIdx].end < subs[selectedIdx].start) subs[selectedIdx].end = subs[selectedIdx].start + 0.1;
-  renderTable();
+function adj(field, dir) {
+  if (selIdx < 0) return;
+  pushHistory();
+  subs[selIdx][field] = Math.max(0, +(subs[selIdx][field] + dir * unit).toFixed(2));
+  if (subs[selIdx].start >= subs[selIdx].end) {
+    if (field === 'start') subs[selIdx].start = Math.max(0, subs[selIdx].end - 0.1);
+    else subs[selIdx].end = subs[selIdx].start + 0.1;
+  }
+  render();
 }
 
-function globalShift(delta) {
+function globalShift(d) {
   if (!subs.length) return;
-  saveHistory();
-  subs = subs.map(s => ({
-    ...s,
-    start: Math.max(0, +(s.start + delta).toFixed(2)),
-    end: Math.max(0.1, +(s.end + delta).toFixed(2))
-  }));
-  renderTable();
-  showToast(`전체 싱크 ${delta > 0 ? '+' : ''}${delta}s`);
+  pushHistory();
+  subs = subs.map(s => ({ ...s, start: Math.max(0,+(s.start+d).toFixed(2)), end: Math.max(0.1,+(s.end+d).toFixed(2)) }));
+  render();
+  toast(`전체 싱크 ${d > 0 ? '+' : ''}${d}s 적용`);
 }
 
-// ── ROW OPERATIONS ────────────────────────────────────────────────────
+// ── PLAYBACK ──────────────────────────────────────────────────────────
+function playSegment() {
+  if (selIdx < 0 || !ytPlayer || !ytPlayer.seekTo) return;
+  const s = subs[selIdx];
+
+  if (isPlaying) {
+    // Space while playing → stop
+    ytPlayer.pauseVideo();
+    clearTimeout(playTimer);
+    isPlaying = false;
+    render();
+    return;
+  }
+
+  // Start playing from beginning of segment
+  ytPlayer.seekTo(s.start, true);
+  ytPlayer.playVideo();
+  isPlaying = true;
+  render();
+
+  const dur = (s.end - s.start) * 1000;
+  clearTimeout(playTimer);
+  playTimer = setTimeout(() => {
+    try { ytPlayer.pauseVideo(); } catch(e) {}
+    isPlaying = false;
+    render();
+  }, dur);
+}
+
+// ── ROW OPS ───────────────────────────────────────────────────────────
 function addRow() {
-  saveHistory();
-  const last = subs[subs.length - 1];
-  const ns = last ? +(last.end + 0.5).toFixed(2) : 0;
-  subs.push({ start: ns, end: +(ns + 2).toFixed(2), en: '', ko: '', note: '' });
-  selectedIdx = subs.length - 1;
-  renderTable();
-  setTimeout(() => {
-    const rows = document.querySelectorAll('.sr');
-    rows[rows.length-1]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 50);
+  pushHistory();
+  const last = subs[subs.length-1];
+  const ns = last ? +(last.end+0.5).toFixed(2) : 0;
+  subs.push({ start: ns, end: +(ns+2).toFixed(2), en: '', ko: '', note: '' });
+  selIdx = subs.length-1;
+  render();
+  setTimeout(() => document.querySelectorAll('.sr')[subs.length-1]?.scrollIntoView({ behavior:'smooth', block:'center' }), 50);
 }
 
-function deleteRow(i, e) {
-  e.stopPropagation();
-  saveHistory();
-  subs.splice(i, 1);
-  if (selectedIdx >= subs.length) selectedIdx = subs.length - 1;
-  renderTable();
+function delRow(i) {
+  pushHistory();
+  subs.splice(i,1);
+  if (selIdx >= subs.length) selIdx = subs.length-1;
+  render();
 }
 
 function mergeRows() {
-  if (selectedIdx < 0 || selectedIdx >= subs.length - 1) {
-    showToast('합칠 줄을 선택하세요 (선택된 줄 + 다음 줄이 합쳐집니다)');
-    return;
-  }
-  saveHistory();
-  const a = subs[selectedIdx], b = subs[selectedIdx + 1];
-  subs[selectedIdx] = {
-    start: a.start, end: b.end,
-    en: (a.en + ' ' + b.en).trim(),
-    ko: (a.ko + ' ' + b.ko).trim(),
-    note: (a.note + ' ' + b.note).trim()
-  };
-  subs.splice(selectedIdx + 1, 1);
-  renderTable();
-  showToast('줄 합치기 완료');
+  if (selIdx < 0 || selIdx >= subs.length-1) { toast('합칠 줄을 선택하세요 (선택된 줄 + 다음 줄)'); return; }
+  pushHistory();
+  const a = subs[selIdx], b = subs[selIdx+1];
+  subs[selIdx] = { start:a.start, end:b.end, en:(a.en+' '+b.en).trim(), ko:(a.ko+' '+b.ko).trim(), note:'' };
+  subs.splice(selIdx+1,1);
+  render(); toast('줄 합치기 완료');
 }
 
 function splitRow() {
-  if (selectedIdx < 0) { showToast('나눌 줄을 선택하세요'); return; }
-  const s = subs[selectedIdx];
-  if (!s.en || s.en.split(' ').length < 3) { showToast('텍스트가 너무 짧아요'); return; }
-  saveHistory();
-  const mid = Math.floor(s.en.length / 2);
-  const spaceIdx = s.en.indexOf(' ', mid);
-  const split = spaceIdx > 0 ? spaceIdx : mid;
-  const en1 = s.en.substring(0, split).trim();
-  const en2 = s.en.substring(split).trim();
-  const midTime = +((s.start + s.end) / 2).toFixed(2);
-  subs.splice(selectedIdx, 1,
-    { start: s.start, end: midTime, en: en1, ko: '', note: '' },
-    { start: midTime, end: s.end, en: en2, ko: '', note: '' }
+  if (selIdx < 0) { toast('나눌 줄을 선택하세요'); return; }
+  const s = subs[selIdx];
+  if (!s.en || s.en.split(' ').length < 3) { toast('텍스트가 너무 짧아요'); return; }
+  pushHistory();
+  const mid = s.en.indexOf(' ', Math.floor(s.en.length/2)) || Math.floor(s.en.length/2);
+  const midT = +((s.start+s.end)/2).toFixed(2);
+  subs.splice(selIdx,1,
+    { start:s.start, end:midT, en:s.en.substring(0,mid).trim(), ko:'', note:'' },
+    { start:midT, end:s.end, en:s.en.substring(mid).trim(), ko:'', note:'' }
   );
-  renderTable();
-  showToast('줄 나누기 완료 — 번역은 다시 입력해주세요');
+  render(); toast('줄 나누기 완료');
 }
 
 function clearAll() {
-  if (!subs.length) return;
-  if (!confirm('모든 자막을 삭제할까요?')) return;
-  saveHistory();
-  subs = []; selectedIdx = -1;
-  renderTable();
-  showToast('전체 초기화 완료');
+  if (!subs.length || !confirm('모든 자막을 삭제할까요?')) return;
+  pushHistory(); subs = []; selIdx = -1; render(); toast('전체 초기화');
 }
 
 // ── HISTORY ───────────────────────────────────────────────────────────
-function saveHistory() {
-  history = history.slice(0, historyIdx + 1);
+function pushHistory() {
+  history = history.slice(0, histIdx+1);
   history.push(JSON.parse(JSON.stringify(subs)));
-  historyIdx = history.length - 1;
-  if (history.length > 50) { history.shift(); historyIdx--; }
-  document.getElementById('undoBtn').disabled = false;
+  histIdx = history.length-1;
+  if (history.length > 60) { history.shift(); histIdx--; }
 }
 
 function undo() {
-  if (historyIdx < 0) return;
-  subs = JSON.parse(JSON.stringify(history[historyIdx]));
-  historyIdx--;
-  if (selectedIdx >= subs.length) selectedIdx = subs.length - 1;
-  renderTable();
-  document.getElementById('undoBtn').disabled = historyIdx < 0;
-  showToast('실행 취소');
+  if (histIdx < 0) return;
+  subs = JSON.parse(JSON.stringify(history[histIdx]));
+  histIdx--;
+  if (selIdx >= subs.length) selIdx = subs.length-1;
+  render(); toast('실행 취소');
 }
 
-// ── TRANSLATE MODAL ───────────────────────────────────────────────────
+// ── TRANSLATE ─────────────────────────────────────────────────────────
 function openTranslateModal() {
-  if (!subs.length) { showToast('자막을 먼저 불러오세요'); return; }
-  const lines = subs.map((s, i) =>
-    `${i+1}. [${fmt(s.start)}~${fmt(s.end)}] ${s.en}`
-  ).join('\n');
-  const prompt = `아래 영어 자막을 한국어로 번역하고, 중요한 표현이나 단어에는 설명을 추가해주세요.
+  if (!subs.length) { toast('자막을 먼저 불러오세요'); return; }
+  const lines = subs.map((s,i) => `${i+1}. [${fmt(s.start)}~${fmt(s.end)}] ${s.en}`).join('\n');
+  document.getElementById('translateContent').value =
+`아래 영어 자막을 한국어로 번역하고, 중요한 표현이나 단어에 설명을 추가해주세요.
 
-다음 형식으로 답해주세요 (파이프 구분):
-번호|한국어번역|표현설명(없으면 빈칸)
-
+형식: 번호|한국어번역|표현설명(없으면 빈칸)
 예시:
 1|첫날은 완전 망했어|bust = 완전 실패, 망하다
 2|우리 기준으로도 말이야|
 
 자막:
 ${lines}`;
-  document.getElementById('translateContent').value = prompt;
   openModal('translateModal');
 }
 
-function copyTranslateContent() {
-  const el = document.getElementById('translateContent');
-  navigator.clipboard.writeText(el.value).then(() => {
-    showToast('클립보드에 복사됐어요! Claude 채팅창에 붙여넣으세요.');
+function copyTranslate() {
+  navigator.clipboard.writeText(document.getElementById('translateContent').value).then(() => {
+    toast('복사됐어요! Claude 채팅창에 붙여넣으세요.');
     closeModal('translateModal');
   });
 }
 
 // ── EXPORT ────────────────────────────────────────────────────────────
-function openExportModal() {
-  if (!subs.length) { showToast('자막을 먼저 불러오세요'); return; }
-  openModal('exportModal');
-}
-
 function exportLesson() {
+  if (!subs.length) return;
   const title = document.getElementById('exportTitle').value.trim() || 'Speaking Gym Lesson';
-  const html = buildLessonHtml(title, currentVid, subs);
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const blob = new Blob([buildHtml(title, currentVid, subs)], { type:'text/html;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = title.replace(/[^\w가-힣]/g,'_') + '_lesson.html';
   a.click();
   closeModal('exportModal');
-  showToast('학습 파일 생성 완료!');
+  toast('학습 파일 생성 완료!');
 }
 
 function saveLesson() {
   const data = { vid: currentVid, subs, savedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(data,null,2)], { type:'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'sg_lesson_' + Date.now() + '.json';
   a.click();
-  showToast('저장 완료 (JSON)');
+  toast('저장 완료');
 }
 
-// ── LESSON HTML BUILDER ───────────────────────────────────────────────
-function buildLessonHtml(title, vid, subs) {
-  const sj = JSON.stringify(subs);
+// ── LESSON HTML ───────────────────────────────────────────────────────
+function buildHtml(title, vid, subs) {
   return `<!DOCTYPE html>
 <html lang="ko"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -866,14 +945,13 @@ function buildLessonHtml(title, vid, subs) {
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#F5F2EC;min-height:100vh;}
 .hd{background:#1a2744;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
-.hd h1{font-size:15px;font-weight:700;}
-.badge{background:#e85d26;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700;}
+.hd h1{font-size:15px;font-weight:700;}.badge{background:#e85d26;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700;}
 .wrap{max-width:900px;margin:0 auto;padding:20px 16px 60px;}
 .yt{width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-bottom:16px;}
 .yt iframe{width:100%;height:100%;border:none;}
 .ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;}
 .btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
-.bn{background:#1a2744;color:#fff;}.bo{background:#e85d26;color:#fff;}.bl{background:#fff;border:1.5px solid #ddd;color:#333;}
+.bn{background:#1a2744;color:#fff;}.bl{background:#fff;border:1.5px solid #ddd;color:#333;}
 .info{font-size:12px;color:#aaa;margin-left:auto;}
 .prog{height:5px;background:#ddd;border-radius:3px;margin-bottom:14px;}
 .progf{height:100%;background:#e85d26;border-radius:3px;transition:width .3s;}
@@ -882,17 +960,15 @@ body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#F5F
 .sub:hover{border-color:#e85d26;}.sub.active{border-color:#1a2744;background:#eef2ff;}.sub.seen{opacity:.55;}
 .t{font-size:11px;color:#ccc;font-family:monospace;margin-bottom:4px;}
 .en{font-size:15px;font-weight:700;color:#1a2744;line-height:1.4;}
-.ko{font-size:13px;color:#e85d26;margin-top:4px;display:none;line-height:1.4;}
-.ko.show{display:block;}
-.note{font-size:11px;color:#7a4500;background:#faeeda;border-radius:6px;padding:3px 8px;margin-top:4px;display:none;}
-.note.show{display:block;}
+.ko{font-size:13px;color:#e85d26;margin-top:4px;display:none;line-height:1.4;}.ko.show{display:block;}
+.note{font-size:11px;color:#7a4500;background:#faeeda;border-radius:6px;padding:3px 8px;margin-top:4px;display:none;}.note.show{display:block;}
 </style></head><body>
 <div class="hd"><h1>${title}</h1><span class="badge">Speaking Gym</span></div>
 <div class="wrap">
 ${vid?`<div class="yt"><iframe id="ytp" src="https://www.youtube.com/embed/${vid}?enablejsapi=1" allowfullscreen></iframe></div>`:''}
 <div class="ctrl">
-  <button class="btn bn" onclick="toggleAll('ko')">번역 보기/숨기기</button>
-  <button class="btn bn" onclick="toggleAll('note')">설명 보기/숨기기</button>
+  <button class="btn bn" onclick="tog('ko')">번역 보기/숨기기</button>
+  <button class="btn bn" onclick="tog('note')">설명 보기/숨기기</button>
   <button class="btn bl" onclick="go(-1)">◀ 이전</button>
   <button class="btn bl" onclick="go(1)">다음 ▶</button>
   <span class="info" id="inf"></span>
@@ -901,28 +977,21 @@ ${vid?`<div class="yt"><iframe id="ytp" src="https://www.youtube.com/embed/${vid
 <div class="subs" id="sl"></div>
 </div>
 <script>
-const subs=${sj};
+const subs=${JSON.stringify(subs)};
 let cur=0,showKo=false,showNote=false;
 function render(){
   const sl=document.getElementById('sl');sl.innerHTML='';
   subs.forEach((s,i)=>{
     const d=document.createElement('div');
     d.className='sub'+(i===cur?' active':i<cur?' seen':'');
-    d.innerHTML=\`<div class="t">\${s.start}s—\${s.end}s</div>
-      <div class="en">\${s.en}</div>
-      \${s.ko?'<div class="ko'+(showKo?' show':'')+'">'+s.ko+'</div>':''}
-      \${s.note?'<div class="note'+(showNote?' show':'')+'">'+s.note+'</div>':''}\`;
+    d.innerHTML='<div class="t">'+s.start+'s — '+s.end+'s</div><div class="en">'+s.en+'</div>'+(s.ko?'<div class="ko'+(showKo?' show':'')+'">'+s.ko+'</div>':'')+(s.note?'<div class="note'+(showNote?' show':'')+'">'+s.note+'</div>':'');
     d.onclick=()=>{cur=i;render();seek(s.start);};
     sl.appendChild(d);
   });
   document.getElementById('inf').textContent=(cur+1)+' / '+subs.length;
-  document.getElementById('pf').style.width=((cur+1)/subs.length*100).toFixed(0)+'%';
+  document.getElementById('pf').style.width=((cur+1)/subs.length*100)+'%';
 }
-function toggleAll(type){
-  if(type==='ko') showKo=!showKo;
-  else showNote=!showNote;
-  render();
-}
+function tog(t){if(t==='ko')showKo=!showKo;else showNote=!showNote;render();}
 function go(d){cur=Math.max(0,Math.min(subs.length-1,cur+d));render();}
 function seek(t){try{document.getElementById('ytp')?.contentWindow.postMessage(JSON.stringify({event:'command',func:'seekTo',args:[t,true]}),'*');}catch(e){}}
 render();
@@ -930,53 +999,35 @@ render();
 }
 
 // ── KEYBOARD ──────────────────────────────────────────────────────────
-document.addEventListener('keydown', (e) => {
-  const tag = document.activeElement.tagName.toLowerCase();
-  const isInput = tag === 'input' || tag === 'textarea' || document.activeElement.contentEditable === 'true';
+document.addEventListener('keydown', e => {
+  const active = document.activeElement;
+  const isInput = active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.contentEditable === 'true';
 
   if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); return; }
-
   if (isInput) return;
 
-  if (e.key === 'ArrowUp') { e.preventDefault(); if (selectedIdx > 0) { selectedIdx--; renderTable(); scrollToSelected(); } }
-  if (e.key === 'ArrowDown') { e.preventDefault(); if (selectedIdx < subs.length-1) { selectedIdx++; renderTable(); scrollToSelected(); } }
-  if (e.key === 'Delete' && selectedIdx >= 0) { e.preventDefault(); saveHistory(); subs.splice(selectedIdx, 1); if (selectedIdx >= subs.length) selectedIdx = subs.length-1; renderTable(); }
-  if (e.key === ' ') { e.preventDefault(); playCurrentSegment(); }
-
-  if (!isEditingText) {
-    if (e.key === 'q' || e.key === 'Q') { e.preventDefault(); adjustTime('start', -1); }
-    if (e.key === 'w' || e.key === 'W') { e.preventDefault(); adjustTime('start', 1); }
-    if (e.key === 'e' || e.key === 'E') { e.preventDefault(); adjustTime('end', -1); }
-    if (e.key === 'r' || e.key === 'R') { e.preventDefault(); adjustTime('end', 1); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); if (selIdx > 0) { selIdx--; render(); document.querySelectorAll('.sr')[selIdx]?.scrollIntoView({block:'nearest'}); } }
+  if (e.key === 'ArrowDown') { e.preventDefault(); if (selIdx < subs.length-1) { selIdx++; render(); document.querySelectorAll('.sr')[selIdx]?.scrollIntoView({block:'nearest'}); } }
+  if (e.key === 'Delete' && selIdx >= 0) { e.preventDefault(); delRow(selIdx); }
+  if (e.key === ' ') { e.preventDefault(); playSegment(); }
+  if (!isEditing) {
+    if (e.key==='q'||e.key==='Q') { e.preventDefault(); adj('start',-1); }
+    if (e.key==='w'||e.key==='W') { e.preventDefault(); adj('start',1); }
+    if (e.key==='e'||e.key==='E') { e.preventDefault(); adj('end',-1); }
+    if (e.key==='r'||e.key==='R') { e.preventDefault(); adj('end',1); }
   }
 });
 
-function scrollToSelected() {
-  const rows = document.querySelectorAll('.sr');
-  if (rows[selectedIdx]) rows[selectedIdx].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-}
-
-function playCurrentSegment() {
-  if (!ytPlayer || selectedIdx < 0) return;
-  try {
-    const s = subs[selectedIdx];
-    ytPlayer.seekTo(s.start, true);
-    ytPlayer.playVideo();
-    setTimeout(() => { try { ytPlayer.pauseVideo(); } catch(e){} }, (s.end - s.start) * 1000);
-  } catch(e) {}
-}
-
-// ── MODAL HELPERS ─────────────────────────────────────────────────────
+// ── MODAL ─────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
 document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('mousedown', (e) => { if (e.target === el) closeModal(el.id); });
+  el.addEventListener('mousedown', e => { if (e.target===el) closeModal(el.id); });
 });
 
 // ── TOAST ─────────────────────────────────────────────────────────────
 let toastTimer;
-function showToast(msg) {
+function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -985,7 +1036,7 @@ function showToast(msg) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────
-renderTable();
+render();
 loadYTApi();
 </script>
 </body>
