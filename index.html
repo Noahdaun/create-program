@@ -662,23 +662,30 @@ function render() {
       <div class="sdel"><div class="del-btn" data-i="${i}">✕</div></div>
     `;
 
-    // Row click → select (not on text or time inputs)
-    div.addEventListener('mousedown', e => {
+    div.addEventListener('click', e => {
       const t = e.target;
       if (t.classList.contains('del-btn')) return;
-      if (t.classList.contains('sub-en')) {
-        selectRow(i);
-        startEnEdit(t, i);
-        e.stopPropagation();
-        return;
-      }
+
       if (t.classList.contains('tv')) {
-        selectRow(i);
-        startTvEdit(t, i, t.dataset.f);
-        e.stopPropagation();
+        if (selIdx !== i) { selIdx = i; isPlaying = false; clearTimeout(playTimer); clearInterval(playCheckInterval); render(); }
+        setTimeout(() => {
+          const fresh = document.querySelector(`.tv[data-i="${i}"][data-f="${t.dataset.f}"]`);
+          if (fresh) startTvEdit(fresh, i, t.dataset.f);
+        }, 0);
         return;
       }
-      selectRow(i);
+
+      if (t.classList.contains('sub-en')) {
+        if (isEditing) return;
+        if (selIdx !== i) { selIdx = i; isPlaying = false; clearTimeout(playTimer); clearInterval(playCheckInterval); render(); }
+        setTimeout(() => {
+          const fresh = document.querySelector(`.sub-en[data-i="${i}"]`);
+          if (fresh) startEnEdit(fresh, i);
+        }, 0);
+        return;
+      }
+
+      if (selIdx !== i) { selIdx = i; isPlaying = false; clearTimeout(playTimer); clearInterval(playCheckInterval); render(); }
     });
 
     // Delete button
@@ -730,44 +737,35 @@ function updateSyncPanel() {
 
 // ── TEXT EDIT ─────────────────────────────────────────────────────────
 function startEnEdit(el, i) {
-  if (isEditing) return; // prevent double edit
+  if (isEditing) return;
+  if (!el || !el.isConnected) return; // element must be in DOM
   isEditing = true;
 
-  // Apply editing style directly without re-rendering
   el.contentEditable = 'true';
-  el.style.background = '#1a2744';
-  el.style.color = '#ffffff';
-  el.style.border = '2px solid #e85d26';
-  el.style.borderRadius = '5px';
-  el.style.whiteSpace = 'normal';
-  el.style.overflow = 'visible';
-  el.style.fontWeight = '600';
-  el.style.outline = 'none';
+  el.style.cssText = 'background:#1a2744;color:#ffffff;border:2px solid #e85d26;border-radius:5px;white-space:normal;overflow:visible;font-weight:600;outline:none;padding:3px 8px;width:100%;';
 
-  // Also highlight the row
   const row = el.closest('.sr');
   if (row) row.style.background = '#fff3ee';
 
-  el.focus();
+  // Focus with slight delay to ensure DOM is ready
+  requestAnimationFrame(() => {
+    el.focus();
+    try {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      const s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+    } catch(e) {}
+  });
 
-  // Select all text
-  try {
-    const r = document.createRange();
-    r.selectNodeContents(el);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(r);
-  } catch(e) {}
-
-  const onBlur = () => {
+  el.addEventListener('blur', () => {
     const newVal = el.innerText.replace(/<[^>]*>/g,'').trim();
     if (newVal !== subs[i].en) pushHistory();
     subs[i].en = newVal;
     isEditing = false;
-    render(); // re-render only after done
-  };
-
-  el.addEventListener('blur', onBlur, { once: true });
+    render();
+  }, { once: true });
 
   el.addEventListener('keydown', e => {
     if (e.key === 'Escape') { el.innerText = subs[i].en; el.blur(); }
