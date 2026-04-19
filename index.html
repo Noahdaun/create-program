@@ -848,35 +848,42 @@ function playSegment() {
   isPlaying = true;
   render();
 
-  // Use both setTimeout (safety) and setInterval (accuracy) to stop at end
   clearTimeout(playTimer);
   clearInterval(playCheckInterval);
 
-  const dur = (s.end - s.start) * 1000;
-
-  // setInterval checks actual playback position every 100ms
-  playCheckInterval = setInterval(() => {
-    try {
-      const cur = ytPlayer.getCurrentTime();
-      if (cur >= s.end) {
-        ytPlayer.pauseVideo();
+  // Wait a bit after seekTo before starting to check position
+  // (YouTube needs ~300ms to actually land on the seek position)
+  let checkStarted = false;
+  const startCheck = () => {
+    checkStarted = true;
+    playCheckInterval = setInterval(() => {
+      try {
+        const cur = ytPlayer.getCurrentTime();
+        if (cur >= s.end - 0.05) {
+          ytPlayer.pauseVideo();
+          clearInterval(playCheckInterval);
+          clearTimeout(playTimer);
+          isPlaying = false;
+          render();
+        }
+      } catch(e) {
         clearInterval(playCheckInterval);
-        clearTimeout(playTimer);
-        isPlaying = false;
-        render();
       }
-    } catch(e) {
-      clearInterval(playCheckInterval);
-    }
-  }, 100);
+    }, 80);
+  };
 
-  // setTimeout as backup
+  // Start checking after 400ms (enough time for seekTo to land)
+  const seekDelay = setTimeout(startCheck, 400);
+
+  // Safety timeout: dur + 800ms
+  const dur = (s.end - s.start) * 1000;
   playTimer = setTimeout(() => {
+    if (!checkStarted) clearTimeout(seekDelay);
     try { ytPlayer.pauseVideo(); } catch(e) {}
     clearInterval(playCheckInterval);
     isPlaying = false;
     render();
-  }, dur + 500);
+  }, dur + 800);
 }
 
 // ── ROW OPS ───────────────────────────────────────────────────────────
